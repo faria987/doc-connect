@@ -9,6 +9,7 @@ const AppContext=createContext();
 const AppContextProvider=(props)=>{
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const adminUrl = import.meta.env.VITE_ADMIN_URL;
    axios.defaults.withCredentials=true;
 
   const [doctors,setDoctors]=useState([])
@@ -65,6 +66,7 @@ const AppContextProvider=(props)=>{
     doctors,getDoctorsData,
     token,setToken,
     backendUrl,
+    adminUrl,
     userData,getUserData
   }
 

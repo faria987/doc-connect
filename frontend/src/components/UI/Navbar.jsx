@@ -64,7 +64,7 @@ const Navbar = () => {
           <li className="border-1 rounded-full w-30 h-8 2xl:w-70 2xl:h-18 border-gray-300 flex items-center justify-center ">
             {/* http://localhost:5174/ https://doctor-app-admin-9qms.onrender.com */}
             <a
-              href="http://localhost:5174/"
+              href="https://doctor-app-admin-w3fm.onrender.com"
               target="_blank"
               rel="noopener noreferrer"
             >
