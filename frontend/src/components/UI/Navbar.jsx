@@ -42,45 +42,32 @@ const Navbar = () => {
   return (
     <div>
       <div className="flex items-center justify-between border-b border-b-[#ADADAD] mx-5">
+        {/* navbar first section */}
         <Link onClick={() => scrollTo({ top: 0, behavior: "smooth" })} to="/">
-          <img className="w-20 2xl:w-40 " src={assets.navbar_logo} alt="logo" />
+          <img className="w-20 2xl:w-30 " src={assets.navbar_logo} alt="logo" />
         </Link>
 
-        <ul className="hidden md:flex poppins text-sm 2xl:text-3xl font-semibold items-center gap-6  uppercase  my-8 2xl:my-20  ">
+        {/* nav bar middle section */}
+        <ul className="hidden md:flex poppins text-sm 2xl:text-xl font-semibold items-center gap-10  uppercase  my-8 2xl:my-20  ">
           {["home", "doctors", "about", "contact"].map((nav, index) => (
             <li key={index}>
               <NavLink
                 onClick={() => scrollTo({ top: 0, behavior: "smooth" })}
                 to={nav === "home" ? "/" : `${nav}`}
                 className={({ isActive }) =>
-                  `${isActive ? "border-b-2 border-b-[#5F6FFF]" : ""}`
+                  `${isActive ? "text-orange-500" : ""}`
                 }
               >
                 {nav}
               </NavLink>
             </li>
           ))}
-
-          <li className="border-1 rounded-full w-30 h-8 2xl:w-70 2xl:h-18 border-gray-300 flex items-center justify-center ">
-            {/* http://localhost:5174/ https://doctor-app-admin-9qms.onrender.com */}
-            <a
-              href="https://doctor-app-admin-w3fm.onrender.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Admin Panel
-            </a>
-          </li>
         </ul>
 
         <div className="flex gap-5">
-          {token ? (
+          {token && userData ? (
             <div className="flex items-center gap-2 cursor-pointer group relative">
-              <img
-                className="w-8 rounded-full"
-                src={assets.profile_pic}
-                alt=""
-              />
+              <img className="w-8 rounded-full" src={userData.image} alt="" />
               <img className="w-2.5" src={assets.dropdown_icon} alt="" />
               <div className="absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block">
                 <div className="min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4">
@@ -106,7 +93,7 @@ const Navbar = () => {
                     <p
                       onClick={() => {
                         verifyAccount();
-                        navigate("/api/auth/verify-account");
+                        navigate("/verify-account");
                       }}
                       className="hover:text-black cursor-pointer"
                     >
@@ -115,7 +102,7 @@ const Navbar = () => {
                   )}
 
                   <p
-                    onClick={() => navigate("/api/auth/register")}
+                    onClick={() => navigate("/login")}
                     className="hover:text-black cursor-pointer"
                   >
                     Create Account
@@ -125,8 +112,8 @@ const Navbar = () => {
             </div>
           ) : (
             <button
-              onClick={() => navigate("/api/auth/register")}
-              className="outfit font-semibold text-md 2xl:text-4xl text-white primary w-40 h-12 2xl:w-80 2xl:h-20 rounded-full cursor-pointer"
+              onClick={() => navigate("/login")}
+              className="outfit font-semibold text-md 2xl:text-xl text-white bg-[#14B8A6] py-2.5 px-5 rounded-full cursor-pointer"
             >
               Create Account
             </button>
@@ -158,7 +145,7 @@ const Navbar = () => {
                 onClick={() => setShowMenu(false)}
                 className={({ isActive }) =>
                   `${
-                    isActive ? "bg-[#5f6fff] text-white rounded" : ""
+                    isActive ? "text-orang-500 rounded" : ""
                   } px-6 py-2 rounded inline-block`
                 }
                 to="/"
@@ -169,7 +156,7 @@ const Navbar = () => {
                 onClick={() => setShowMenu(false)}
                 className={({ isActive }) =>
                   `${
-                    isActive ? "bg-[#5f6fff] text-white rounded" : ""
+                    isActive ? "text-orang-500 rounded" : ""
                   } px-6 py-2 rounded inline-block`
                 }
                 to="/doctors"
@@ -180,7 +167,7 @@ const Navbar = () => {
                 onClick={() => setShowMenu(false)}
                 className={({ isActive }) =>
                   `${
-                    isActive ? "bg-[#5f6fff] text-white rounded" : ""
+                    isActive ? "text-orang-500 rounded" : ""
                   } px-6 py-2 rounded inline-block`
                 }
                 to="/about"
@@ -191,7 +178,7 @@ const Navbar = () => {
                 onClick={() => setShowMenu(false)}
                 className={({ isActive }) =>
                   `${
-                    isActive ? "bg-[#5f6fff] text-white rounded" : ""
+                    isActive ? "text-orang-500 rounded" : ""
                   } px-6 py-2 rounded inline-block`
                 }
                 to="/contact"

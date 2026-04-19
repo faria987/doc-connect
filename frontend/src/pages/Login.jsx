@@ -122,7 +122,7 @@ const Login = () => {
 
             {
               states==='Login' && (
-                <p onClick={()=>navigator('/api/auth/reset-password')} className='text-indigo-500 cursor-pointer text-sm hover:underline'>Forget password?</p>
+                <p onClick={()=>navigator('/reset-password')} className='text-indigo-500 cursor-pointer text-sm hover:underline'>Forget password?</p>
 
               )
             }
@@ -135,13 +135,13 @@ const Login = () => {
           {states==='Sign Up'?
           (
             <p className='pt-5 outfit text-sm text-gray-500'>Already have an account? {''}
-            <span className='text-indigo-500 hover:underline cursor-pointer text-md font-medium' onClick={()=>{setStates('Login'); navigator('/api/auth/login');}}>Login here</span>
+            <span className='text-indigo-500 hover:underline cursor-pointer text-md font-medium' onClick={()=>{setStates('Login'); navigator('/login');}}>Login here</span>
             </p>
           )
           :
           (
             <p className='pt-5 outfit text-sm text-gray-500'>Don't have an account?{' '}
-            <span className='text-indigo-500 hover:underline cursor-pointer text-md font-medium' onClick={()=>{setStates('Sign Up');navigator('/api/auth/register')}}>Sign Up</span>
+            <span className='text-indigo-500 hover:underline cursor-pointer text-md font-medium' onClick={()=>{setStates('Sign Up');navigator('/register')}}>Sign Up</span>
             </p>
           )
           }

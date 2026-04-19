@@ -4,9 +4,11 @@ import bcrypt from 'bcrypt'
 import 'dotenv/config'
 import userModel from '../models/userModel.js';
 import transporter from '../config/nodemailer.js';
+const frontendUrl = process.env.VITE_FRONTEND_URL;
 
 //register
 export const register = async(req,res)=>{
+ 
   const {name,email,password}=req.body;
 
   if(!name||!email||!password){
@@ -38,13 +40,63 @@ export const register = async(req,res)=>{
     )
     await user.save();
 
-    //sending welcome Email
-    const mailOption={
-      from:process.env.SENDER_EMAIL,
-      to:email,
-      subject:'Welcome to Aroggo.Link',
-      text:`welcome to Aroggo Link website.your account has been created with email address:${email}`
-    }
+const mailOption = {
+  from: process.env.SENDER_EMAIL,
+  to: email,
+  subject: 'Welcome to DocConnect!',
+  html: `
+  <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+    
+    <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #ddd;">
+      
+      <!-- Header -->
+      <div style="background-color: #4CAF50; color: white; padding: 20px; text-align: center; font-size: 26px; font-weight: bold;">
+        Welcome to DocConnect
+      </div>
+      
+      <!-- Body -->
+      <div style="padding: 25px; color: #333; line-height: 1.8;">
+        
+        <p>Hello <strong>${name}</strong>,</p>
+
+        <p>
+          🎉 Your account has been successfully created using:
+        </p>
+
+        <!-- Highlight Box (OTP style feel) -->
+        <div style="margin: 20px 0; font-size: 16px; color: #4CAF50; background: #e8f5e9; border: 1px dashed #4CAF50; padding: 12px; text-align: center; border-radius: 5px; font-weight: bold;">
+          ${email}
+        </div>
+
+        <p>
+          You can now book appointments with trusted doctors and manage your health records easily.
+        </p>
+
+        <!-- Button -->
+        <div style="text-align: center; margin: 25px 0;">
+          <a href="${frontendUrl}/api/auth/login" target="_blank"
+            style="background-color: #4CAF50; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+            Login to Your Account
+          </a>
+        </div>
+
+        <p style="font-size: 14px; color: #666;">
+          If you did not create this account, no further action is required.
+        </p>
+
+      </div>
+
+      <!-- Footer -->
+      <div style="background-color: #f4f4f4; padding: 15px; text-align: center; color: #777; font-size: 12px; border-top: 1px solid #ddd;">
+        &copy; ${new Date().getFullYear()} DocConnect. All rights reserved.
+      </div>
+
+    </div>
+    
+  </div>
+  `
+};
+
     await transporter.sendMail(mailOption);
 
     //token return
@@ -151,12 +203,39 @@ export const sendVerifyOtp = async(req,res)=>{
     user.verifyOtpExpireAt=Date.now()+10*60*1000;
     await user.save();
 
-    const mailOption={
-      from:process.env.SENDER_EMAIL,
-      to:user.email,
-      subject:'Account verification OTP',
-      text:`Your otp is ${otp}.verify your account using this otp`
-    }
+
+  const mailOption = {
+  from: process.env.SENDER_EMAIL,
+  to: user.email,
+  subject: 'Account Verification OTP',
+  html: `
+    <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+      <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 10px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        
+        <h2 style="text-align:center; color:#4CAF50;">Verify Your Account</h2>
+        <p>Hello <strong>${user.name}</strong>,</p>
+        <p>Thank you for registering with <strong>DocConnect</strong>! Use the OTP below to verify your account:</p>
+        
+        <div style="text-align:center; margin: 30px 0;">
+          <span style="font-size: 24px; font-weight: bold; color: #4CAF50; letter-spacing: 2px; border: 1px dashed #4CAF50; padding: 10px 20px; border-radius:5px;">
+            ${otp}
+          </span>
+        </div>
+
+        <p>If you did not create an account, ignore this email.</p>
+
+        <div style="text-align:center; margin-top: 20px;">
+          <a href="${frontendUrl}/api/auth/verify-account" target="_blank" 
+             style="background-color:#4CAF50; color:white; padding:12px 25px; text-decoration:none; border-radius:5px; font-weight:bold;">
+            Verify Account
+          </a>
+        </div>
+
+        <p style="text-align:center; color:#999; margin-top:30px;">&copy; ${new Date().getFullYear()} DocConnect. All rights reserved.</p>
+      </div>
+    </div>
+  `
+};
 
     await transporter.sendMail(mailOption)
 
@@ -234,12 +313,62 @@ export const sendResetOtp = async(req,res)=>{
     user.resetOtpExpireAt = Date.now()+10*60*1000
     await user.save();
 
-    const mailOption={
-      from:process.env.SENDER_EMAIL,
-      to:user.email,
-      subject:'Password reset otp',
-      text:`Your otp for resetting your password is ${otp}.use this otp to proceed with resetting your password.`
-    }
+const mailOption = {
+  from: process.env.SENDER_EMAIL,
+  to: user.email,
+  subject: 'Password Reset OTP',
+  html: `
+  <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+    
+    <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #ddd;">
+      
+      <!-- Header -->
+      <div style="background-color: #4CAF50; color: white; padding: 20px; text-align: center; font-size: 26px; font-weight: bold;">
+        Reset Your Password
+      </div>
+      
+      <!-- Body -->
+      <div style="padding: 25px; color: #333; line-height: 1.8;">
+        
+        <p>Hello <strong>${user.name}</strong>,</p>
+
+        <p>
+          We received a request to reset your password. Use the OTP below to continue:
+        </p>
+
+        <!-- OTP Box -->
+        <div style="margin: 20px 0; font-size: 22px; color: #4CAF50; background: #e8f5e9; border: 1px dashed #4CAF50; padding: 12px; text-align: center; border-radius: 5px; font-weight: bold; letter-spacing: 2px;">
+          ${otp}
+        </div>
+
+        <p>
+          This OTP is valid for a limited time. Please do not share it with anyone.
+        </p>
+
+        <!-- Button -->
+        <div style="text-align: center; margin: 25px 0;">
+          <a href="${frontendUrl}/api/auth/reset-password" target="_blank"
+            style="background-color: #4CAF50; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+            Reset Password
+          </a>
+        </div>
+
+        <p style="font-size: 14px; color: #666;">
+          If you did not request a password reset, please ignore this email.
+        </p>
+
+      </div>
+
+      <!-- Footer -->
+      <div style="background-color: #f4f4f4; padding: 15px; text-align: center; color: #777; font-size: 12px; border-top: 1px solid #ddd;">
+        &copy; ${new Date().getFullYear()} DocConnect. All rights reserved.
+      </div>
+
+    </div>
+    
+  </div>
+  `
+};
 
     await transporter.sendMail(mailOption)
     return res.json({success:true,message:'otp sent to your email'});
@@ -249,6 +378,8 @@ export const sendResetOtp = async(req,res)=>{
     
   }
 }
+
+
 //reset password
 export const resetPassword = async(req,res)=>{
   const {email,otp,newPassword}=req.body;

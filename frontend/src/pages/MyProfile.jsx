@@ -1,148 +1,209 @@
 import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext.jsx";
+import {assets} from '../assets/assets.js'
 import axios from "axios";
 import { toast } from "react-toastify";
-import { assets } from "../assets/assets.js";
+
 
 const MyProfile = () => {
-  const [profileImg,setProfileImg]=useState(false)
-  const { userData, setUserData, backendUrl, token } = useContext(AppContext);
-  const [isEdit, setIsEdit] = useState(false);
-  const [formData, setFormData] = useState({});
+  const {userData,setUserData,token,backendUrl,getUserData}=useContext(AppContext)
 
-  if (!userData) return null;
 
-  const handleEdit=()=>{
-    setIsEdit(!isEdit);
+  const [isEdit,setIsEdit]=useState(false)
+
+  const [image,setImage]=useState(false)
+  const updateUserProfileData=async()=>{
+    try {
+      const formData= new FormData()
+      formData.append('name',userData.name)
+      formData.append('phone',userData.phone)
+      formData.append('address',JSON.stringify(userData.address))
+      formData.append('gender',userData.gender)
+      formData.append('dob',userData.dob)
+
+      image && formData.append('image',image)
+
+      const {data}=await axios.post(backendUrl + '/api/user/update-profile',formData,{headers:{token}})
+
+      if(data.success){
+        toast.success(data.message)
+        await getUserData()
+        setIsEdit(false)
+        setImage(false)
+      }else{
+        toast.error(data.message)
+      }
+      
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+      
+    }
+
+
   }
-
   
 
   
   return (
-    <div className="py-10  flex justify-center">
-      <form className="w-2/3 rounded drop-shadow-gray-400 shadow-md">
-        <div className="">
-          <div className=" flex justify-center">
-            <div className=" w-full h-60 rounded-t overflow-hidden flex items-center justify-center">
-              {/* profile image circle */}
-              <div className=" w-30 h-30 rounded-full  bg-gray-300 overflow-hidden">
-                <label
-                  htmlFor="profileImg"
-                  className="cursor-pointer w-full h-full block"
-                >
-                  <img
-                    src={
-                      profileImg
-                        ? URL.createObjectURL(profileImg)
-                        : assets.upload_icon
-                    }
-                    alt="Profile"
-                    className="object-cover w-full h-full"
-                  />
-                </label>
+    userData && (
+      <div className="max-w-lg flex flex-col gap-2 text-sm mt-5 ml-5">
+        {isEdit ? (
+          <label htmlFor="image">
+            <div className="inline-block relative cursor-pointer">
+              <img
+              className="w-36 rounded  opacity-75"
+                src={image ? URL.createObjectURL(image) : userData.image}
+                alt=""
+              />
+              <img
+              className="w-10 absolute bottom-12 right-12"
+                src={image ? '' : assets.upload_icon}
+                alt=""
+              />
+            </div>
 
+            <input
+              onChange={(e) => setImage(e.target.files[0])}
+              type="file"
+              id="image"
+              hidden
+            />
+          </label>
+        ) : (
+          <img className="w-36 rounded" src={userData.image} alt="" />
+        )}
+
+        {isEdit ? (
+          <input
+            className="bg-gray-50 text-3xl font-medium max-w-100 mt-4 outline-1 outline-indigo-200 rounded pl-1"
+            type="text"
+            value={userData.name}
+            onChange={(e) =>
+              setUserData((prev) => ({ ...prev, name: e.target.value }))
+            }
+          ></input>
+        ) : (
+          <p className="font-medium text-3xl text-neutral-800 mt-4">
+            {userData.name}
+          </p>
+        )}
+
+        <hr className="bg-zinc-400 h-[1px] border-none" />
+
+        {/* contact information */}
+        <div>
+          <p className="text-neutral-500 underline mt-3">CONTACT INFORMATION</p>
+          <div className="grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-neutral-700">
+            <p className="font-medium">Email:</p>
+            <p className="text-blue-500">{userData.email}</p>
+            <p className="font-medium">Phone:</p>
+            {isEdit ? (
+              <input
+                className="bg-gray-50 font-medium max-w-50 outline-1 outline-indigo-200 rounded-sm pl-1"
+                type="text"
+                value={userData.phone}
+                onChange={(e) =>
+                  setUserData((prev) => ({ ...prev, phone: e.target.value }))
+                }
+              ></input>
+            ) : (
+              <p className="text-blue-500">{userData.phone}</p>
+            )}
+
+            <p className="font-medium">Address:</p>
+            {isEdit ? (
+              <p>
                 <input
-                  type="file"
-                  id="profileImg"
-                  className="hidden"
-                  accept="image/*"
-                  onChange={(e) => setProfileImg(e.target.files[0])}
+                  className="bg-gray-50 font-medium max-w-50 outline-1 outline-indigo-200 rounded-sm pl-1"
+                  value={userData.address.line1}
+                  onChange={(e) =>
+                    setUserData((prev) => ({
+                      ...prev,
+                      address: { ...prev.address, line1: e.target.value },
+                    }))
+                  }
+                  type="text"
                 />
-              </div>
-            </div>
-          </div>
-
-          <div className=" flex flex-col gap-10 p-10">
-            <p className="text-center font-bold poppins text-2xl">forhad</p>
-
-            <div className="flex flex-col gap-10">
-              <div className="">
-                <p className="poppins text-base font-bold inline-block border-b  border-gray-300">
-                  Contact Information
-                </p>
-                <div className="pt-5 flex items-center gap-5">
-                  <label className="text-base outfit" htmlFor="">
-                    Email :
-                  </label>
-                  <input
-                    className="border-b-1 border-gray-300  outline-none px-2 py-1.5  w-1/3"
-                    type="email"
-                  />
-                </div>
-
-                <div className="pt-5">
-                  <div className="flex items-center gap-5">
-                    <label className="text-base outfit" htmlFor="">
-                      Phone :
-                    </label>
-                    <input
-                      className="border-b border-gray-300  outline-none px-2 py-1.5"
-                      type="number"
-                    />
-                  </div>
-
-                  <div className="flex flex-col pt-5">
-                    <label className="text-base outfit" htmlFor="">
-                      Address :
-                    </label>
-                    <div className="flex flex-col gap-5">
-                      <input
-                        placeholder="Line 1"
-                        className="border-b border-gray-300 outline-none px-2 py-1.5 w-1/3"
-                        type="text"
-                      />
-                      <input
-                        placeholder="Line 2"
-                        className="border-b border-gray-300 outline-none px-2 py-1.5 w-1/3"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="">
-                <p className="border-b font-bold border-gray-300 inline-block">
-                  Basic Information
-                </p>
-                <div className="pt-5 flex items-center gap-2">
-                  <label htmlFor="">Gander :</label>
-                  <input
-                    className="border-b border-gray-300 py-1.5 px-2 outline-none"
-                    type="text"
-                  />
-                </div>
-
-                <div className="pt-5 flex items-center gap-2">
-                  <label htmlFor="">BirthDay :</label>
-                  <input
-                    type="date"
-                    className="border-b text-gray-400 border-gray-300 py-1.5 px-2 outline-none"
-                  />
-                </div>
-
-                <div className="flex justify-center my-10">
-                  {isEdit ? (
-                    <button className="border rounded px-5 py-0.5 poppins font-bold text-base hover hover:bg-green-500 hover:text-white">
-                      Save
-                    </button>
-                  ) : (
-                    <button
-                    type="button"
-                      onClick={handleEdit}
-                      className="border rounded px-5 py-0.5 poppins font-bold text-base hover hover:bg-red-500 hover:text-white"
-                    >
-                      Edit
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
+                <br />
+                <input
+                  className="bg-gray-50 font-medium max-w-50 outline-1 outline-indigo-200 rounded-sm pl-1 mt-2"
+                  value={userData.address.line2}
+                  onChange={(e) =>
+                    setUserData((prev) => ({
+                      ...prev,
+                      address: { ...prev.address, line2: e.target.value },
+                    }))
+                  }
+                  type="text"
+                />
+              </p>
+            ) : (
+              <p className="text-blue-500">
+                {userData.address.line1}
+                <br />
+                {userData.address.line2}
+              </p>
+            )}
           </div>
         </div>
-      </form>
-    </div>
+
+        {/* basic information */}
+
+        <div>
+          <p className="text-neutral-500 underline mt-3">BASIC INFORMATION</p>
+          <div className="grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-neutral-700">
+            <p className="font-medium">Gender:</p>
+            {isEdit ? (
+              <select
+                className="max-w-20 bg-gray-100 outline-indigo-200"
+                value={userData.gender}
+                onChange={(e) =>
+                  setUserData((prev) => ({ ...prev, gender: e.target.value }))
+                }
+              >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            ) : (
+              <p className="text-gray-400">{userData.gender}</p>
+            )}
+
+            <p className="font-medium">Birthday:</p>
+            {isEdit ? (
+              <input
+                className="max-w-28 bg-gray-100"
+                type="date"
+                value={userData.dob}
+                onChange={(e) =>
+                  setUserData((prev) => ({ ...prev, dob: e.target.value }))
+                }
+              ></input>
+            ) : (
+              <p className="text-gray-400">{userData.dob}</p>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-10">
+          {isEdit ? (
+            <button
+              className="border border-black px-8 py-2 rounded-sm hover:bg-black hover:text-white font-bold uppercase text-sm "
+              onClick={updateUserProfileData}
+            >
+              Save information
+            </button>
+          ) : (
+            <button
+              className="border border-black px-8 py-2 rounded-sm hover:bg-black hover:text-white transition-all font-bold uppercase text-sm "
+              onClick={() => setIsEdit(true)}
+            >
+              Edit
+            </button>
+          )}
+        </div>
+      </div>
+    )
   );
 };
 

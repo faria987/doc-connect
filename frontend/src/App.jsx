@@ -28,11 +28,12 @@ const App = () => {
         <Route path='/doctors' element={<Doctor/>}></Route>
         <Route path='/doctors/:id' element={<Doctor/>}></Route>
         <Route path='/appointment/:docId' element={<Appointment/>}></Route>
+        
         <Route path='/my-appointment' element={<MyAppointment/>}></Route>
-        <Route path='/api/auth/:id' element={<Login/>}></Route>
+        <Route path='/login' element={<Login/>}></Route>
         <Route path='/profile' element={<MyProfile/>}/>
-        <Route path='/api/auth/verify-account' element={<EmailVerify/>}/>
-        <Route path='/api/auth/reset-password' element={<ResetPassword/>}/>
+        <Route path='/verify-account' element={<EmailVerify/>}/>
+        <Route path='/reset-password' element={<ResetPassword/>}/>
         <Route path='/privacy' element={<Privacy/>}/>
         <Route path='/delivery' element={<Delivery/>}/>
 

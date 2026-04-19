@@ -3,7 +3,7 @@ import React from 'react'
 const Delivery = () => {
   return (
     <div>
-      <section class="bg-gradient-to-br from-blue-50 to-white py-16 px-6">
+      <section class=" py-16 px-6">
   <div class="max-w-4xl mx-auto text-center">
     <h2 class="text-3xl md:text-4xl font-bold text-blue-700 mb-6">
       🏥 Delivery Policy
@@ -14,9 +14,9 @@ const Delivery = () => {
       securely and on time to maintain your convenience and trust.
     </p>
 
-    <div class="grid md:grid-cols-3 gap-8">
+    <div class="grid md:grid-cols-3 gap-8 py-20">
       {/* <!-- Card 1 --> */}
-      <div class="bg-white shadow-lg rounded-2xl p-6 border-t-4 border-blue-500 hover:shadow-2xl transition-all duration-300">
+      <div class="bg-white p-6 shadow-lg rounded-2xl border-t-4  border-blue-500 hover:shadow-2xl transition-all duration-300">
         <div class="text-blue-600 text-4xl mb-4">📄</div>
         <h3 class="text-xl font-semibold text-gray-800 mb-2">Prescription Delivery</h3>
         <p class="text-gray-600 text-sm">
@@ -50,7 +50,7 @@ const Delivery = () => {
       <p>
         For more details or delivery support, please contact us at
         <a href="mailto:support@doctorbookingapp.com" class="text-blue-600 font-medium hover:underline">
-          &nbsp; support@aroggolink.com
+          &nbsp; support@docconnect.com
         </a>
       </p>
     </div>

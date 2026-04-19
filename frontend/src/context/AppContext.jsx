@@ -16,8 +16,9 @@ const AppContextProvider=(props)=>{
  
   //page reload korar pore logout hoye jacce tai useState er modde ('') atar jaygay (localStorage.getItem('token')?localStorage.getItem('token'):false) deoya hole are auto logout hobe nah
   const [token,setToken]=useState(localStorage.getItem('token')?localStorage.getItem('token'):false)
+   
 
-  const [userData,setUserData]=useState({})
+  const [userData,setUserData]=useState(false)
 
 
   //admin data
@@ -38,42 +39,47 @@ const AppContextProvider=(props)=>{
     }
   }
 
-  //user data
+  // user data
   const getUserData = async () => {
     try {
-      const { data } = await axios.get(`${backendUrl}/api/user/userData`);
-      console.log("User Data Response:", data);
+      const { data } = await axios.get(backendUrl + '/api/user/get-profile',{headers:{token}});
 
       if (data.success) {
-        // API response যদি single user দেয়
-        if (data.user) {
-          setUserData(data.user);
-        }
-        // API response যদি multiple users array দেয়
-        else if (data.users) {
-          setUserData(data.users);
-        }
+        setUserData(data.userData)
       } else {
-        toast.error(data.message || "Failed to fetch user data");
+        toast.error(data.message);
       }
     } catch (error) {
+      console.log(error)
       toast.error(error.message);
     }
   };
 
 
-  const value={
-    doctors,getDoctorsData,
-    token,setToken,
+  const value = {
+    doctors,
+    getDoctorsData,
+    token,
+    setToken,
     backendUrl,
     adminUrl,
-    userData,getUserData
-  }
+    userData,
+    setUserData,
+    getUserData,
+  };
 
   useEffect(()=>{
     getDoctorsData(); 
-    getUserData();
   },[])
+  useEffect(()=>{
+    if(token){
+      getUserData();
+    }else{
+      setUserData(false)
+    }
+
+  },[token])
+
 
 
 

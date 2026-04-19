@@ -9,7 +9,7 @@ const Privacy = () => {
   return (
     <div>
       <div className="min-h-screen py-16 px-6">
-        <div className="max-w-4xl mx-auto  shadow-xl rounded-2xl p-10 border border-blue-100">
+        <div className="max-w-4xl mx-auto p-10 ">
           {/* Header */}
           <h1 className="text-center font-poppins text-3xl md:text-4xl font-bold text-blue-700">
             <span className="text-orange-400 text-5xl">P</span>rivacy Policy
@@ -17,7 +17,7 @@ const Privacy = () => {
 
           <p className="text-center text-gray-500 text-sm mt-2">
             Last updated:{" "}
-            <span className="font-semibold">October 24, 2025</span>
+            <span className="font-semibold">April 24, 2026</span>
           </p>
 
           {/* Intro */}
@@ -25,7 +25,7 @@ const Privacy = () => {
             <p>
               Welcome to{" "}
               <span className="font-semibold text-blue-600">
-                Doctor Booking App – AroggoLink
+                Doctor Booking App – DocConnect
               </span>
               . Your privacy is very important to us. This Privacy Policy
               explains how we collect, use, and protect your personal
@@ -151,12 +151,12 @@ const Privacy = () => {
                 </p>
                 <p>
                   📧 <span className="font-medium">Email:</span>{" "}
-                  aroggo.link@gmail.com
+                  docconnect@gmail.com
                 </p>
                 <p>
                   🏢{" "}
                   <span className="font-medium">Developer/Company Name:</span>{" "}
-                  AroggoLink
+                  DocConnect
                 </p>
               </div>
             </li>
@@ -164,7 +164,7 @@ const Privacy = () => {
 
           {/* Footer note */}
           <div className="mt-12 border-t pt-6 text-center text-gray-500 text-sm">
-            © {new Date().getFullYear()} AroggoLink. All rights reserved.
+            © {new Date().getFullYear()} DocConnect. All rights reserved.
           </div>
         </div>
       </div>

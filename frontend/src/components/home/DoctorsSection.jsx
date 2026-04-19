@@ -20,7 +20,7 @@ const DoctorsSection = () => {
 
       <button 
       onClick={()=>{navigate('/doctors'),scrollTo({top:0,behavior:'smooth'})}}
-      className='outfit font-semibold text-md border-1 border-[#C9D8Fd] cursor-pointer bg-[#EAEFFF] rounded-full w-30 h-12'>Lode More
+      className='outfit font-semibold text-md border-1 border-[#C9D8Fd] cursor-pointer bg-[#EAEFFF] rounded-full px-5 py-2'>Lode More
       </button>
     </div>
   )
