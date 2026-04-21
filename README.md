@@ -156,21 +156,10 @@ npm start
 ├── project proposal.md
 │ 
 |
-├── Demo Video/
 │
 ├── screenshots/
 │
 └── README.md
 ```
-
----
-
-## 🎥 Demo Video
-
-👉 Watch Project Demo
-
-<video controls src="Demo Video/admin.mp4" title="text"></video> 
-<video controls src="Demo Video/frontend.mp4" title="Title"></video>
-<video controls src="Demo Video/backend and data base.mkv" title="Title"></video>
 
 ---
